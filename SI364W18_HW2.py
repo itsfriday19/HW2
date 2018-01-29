@@ -31,7 +31,7 @@ app.config['SECRET_KEY'] = 'hardtoguessstring'
 
 class AlbumEntryForm(FlaskForm):
 	album_name = StringField('Enter the name of an album:', validators=[Required()])
-	rating = StringField('How much do you like this album? (1 low, 3 high)', validators=[Required()])
+	rating = RadioField('How much do you like this album? (1 low, 3 high)', choices = ['1', '2', '3'], validators=[Required()])
 	submit = SubmitField("Submit")
 
 
@@ -77,21 +77,21 @@ def song(artist_name):
     return render_template("specific_artist.html", results = results_dict['results'])
 
 
-# @app.route('/album_entry')
-# def album():
-#     simpleForm = AlbumEntryForm()
-#     return render_template("album_entry.html", form=simpleForm)
+@app.route('/album_entry')
+def album():
+    simpleForm = AlbumEntryForm()
+    return render_template("album_entry.html", form=simpleForm)
 
 
-# @app.route('/album_result', methods = ['GET', 'POST'])
-# def result():
-#     form = AlbumEntryForm(request.form)
-#     if request.method == 'POST' and form.validate_on_submit():
-#         name = form.album_name.data
-#         age = form.rating.data
-#         return "The album title you just submitted was: {0}\n\n On a scale of 1 to 3, you would give it {1} stars!".format(album_name, rating)
-#     flash('All fields are required!')
-#     return redirect(url_for('album')))
+@app.route('/album_result', methods = ['GET', 'POST'])
+def result():
+    form = AlbumEntryForm(request.form)
+    if request.method == 'POST' and form.validate_on_submit():
+        name = form.album_name.data
+        age = form.rating.data
+        return "The album title you just submitted was: {0}\n\n On a scale of 1 to 3, you would give it {1} stars!".format(album_name, rating)
+    flash('All fields are required!')
+    return redirect(url_for('album'))
 
 
 if __name__ == '__main__':
